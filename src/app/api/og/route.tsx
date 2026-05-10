@@ -114,7 +114,7 @@ export async function GET(req: NextRequest) {
           position: 'absolute', bottom: '40px', right: '60px',
           color: 'rgba(255,255,255,0.2)', fontSize: '13px',
         }}>
-          cinescope.vercel.app
+          cinescope.autoflowa.in
         </div>
       </div>
     ),

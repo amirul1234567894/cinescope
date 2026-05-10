@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { tmdb, slugify } from '@/lib/tmdb'
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://cinescope.vercel.app'
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://cinescope.autoflowa.in'
 
 export async function GET() {
   try {

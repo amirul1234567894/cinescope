@@ -10,7 +10,6 @@ import { UpcomingReleases } from '@/components/home/UpcomingReleases'
 import { GenreExplorer } from '@/components/home/GenreExplorer'
 import { LatestNews } from '@/components/home/LatestNews'
 import { SectionSkeleton } from '@/components/ui/SectionSkeleton'
-import { AdUnit } from '@/components/ads/AdUnit'
 
 export const metadata: Metadata = {
   title: 'CineScope — Your Premium Movie & Entertainment Universe',
@@ -84,13 +83,6 @@ export default async function HomePage() {
           <FeaturedTrailers movies={movies.slice(0, 8)} />
         </Suspense>
 
-        {/* Ad Slot — mid-page horizontal */}
-        <div className="px-4 sm:px-6 lg:px-8">
-          <div className="max-w-[1200px] mx-auto">
-            <AdUnit format="auto" responsive />
-          </div>
-        </div>
-
         {/* Upcoming Releases */}
         <Suspense fallback={<SectionSkeleton title="Upcoming Releases" />}>
           <UpcomingReleases items={upcoming} />
@@ -119,13 +111,6 @@ export default async function HomePage() {
             viewAllHref="/movies/top-rated"
           />
         </Suspense>
-
-        {/* Ad Slot — bottom horizontal */}
-        <div className="px-4 sm:px-6 lg:px-8">
-          <div className="max-w-[1200px] mx-auto">
-            <AdUnit format="auto" responsive />
-          </div>
-        </div>
 
         {/* Latest News */}
         <Suspense fallback={<SectionSkeleton title="Entertainment News" />}>

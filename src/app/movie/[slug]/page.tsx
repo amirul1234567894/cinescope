@@ -16,7 +16,6 @@ import { MovieActions } from '@/components/movies/MovieActions'
 import { WatchProviders } from '@/components/movies/WatchProviders'
 import { MovieJsonLd } from '@/components/movies/MovieJsonLd'
 import { BackdropHero } from '@/components/movies/BackdropHero'
-import { AdUnit } from '@/components/ads/AdUnit'
 
 interface Props {
   params: Promise<{ slug: string }>
@@ -344,11 +343,6 @@ export default async function MoviePage({ params }: Props) {
 
           {/* ── TRAILERS ── */}
           {trailers.length > 0 && <TrailerSection videos={trailers} />}
-
-          {/* Ad Slot — between content sections */}
-          <div className="my-12 max-w-[1200px] mx-auto">
-            <AdUnit format="auto" responsive />
-          </div>
 
           {/* ── REVIEWS ── */}
           <ReviewsSection movieId={movie.id} type="movie" />

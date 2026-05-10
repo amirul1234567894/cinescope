@@ -32,7 +32,7 @@ const jetbrainsMono = JetBrains_Mono({
 })
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://cinescope.vercel.app'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://cinescope.autoflowa.in'),
   title: {
     default: 'CineScope — Your Premium Movie & Entertainment Universe',
     template: '%s | CineScope',

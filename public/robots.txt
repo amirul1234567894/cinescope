@@ -1,18 +1,38 @@
 User-agent: *
 Allow: /
 
-# Block admin routes from indexing
+# Block sensitive pages from indexing
 Disallow: /admin/
 Disallow: /api/
 Disallow: /profile/
 Disallow: /watchlist/
 Disallow: /login/
 Disallow: /register/
+Disallow: /_next/
+Disallow: /private/
 
-# Sitemaps
-Sitemap: https://cinescope.vercel.app/sitemap.xml
-Sitemap: https://cinescope.vercel.app/sitemap-movies.xml
-Sitemap: https://cinescope.vercel.app/sitemap-tv.xml
+# Block aggressive scrapers
+User-agent: AhrefsBot
+Disallow: /
 
-# Crawl delay for bots
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
+
+User-agent: PetalBot
+Disallow: /
+
+# Allow Google AdSense
+User-agent: Mediapartners-Google
+Allow: /
+
+# Sitemap
+Sitemap: https://cinescope.autoflowa.in/sitemap.xml
+
+# Crawl delay
 Crawl-delay: 1
