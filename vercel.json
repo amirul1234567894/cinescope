@@ -24,15 +24,5 @@
       "source": "/sitemap.xml",
       "destination": "/api/sitemap"
     }
-  ],
-  "crons": [
-    {
-      "path": "/api/cron/update-trending",
-      "schedule": "0 */6 * * *"
-    },
-    {
-      "path": "/api/cron/update-upcoming",
-      "schedule": "0 0 * * *"
-    }
   ]
 }
