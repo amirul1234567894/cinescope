@@ -2,10 +2,29 @@ import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Calendar, MapPin, Film, Tv, ExternalLink, Star, Users } from 'lucide-react'
+import { Calendar, MapPin, Film, Tv, ExternalLink, Star } from 'lucide-react'
 import { tmdb, tmdbImage, getYear } from '@/lib/tmdb'
 
 interface Props { params: Promise<{ id: string }> }
+
+// Person credit types (cast credits in TMDb have these fields)
+interface MovieCredit {
+  id: number
+  title: string
+  poster_path: string | null
+  vote_average: number
+  release_date: string
+  character: string
+}
+
+interface TVCredit {
+  id: number
+  name: string
+  poster_path: string | null
+  vote_average: number
+  first_air_date: string
+  character: string
+}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   try {
@@ -32,8 +51,10 @@ export default async function PersonPage({ params }: Props) {
   let person
   try { person = await tmdb.people.detail(personId) } catch { notFound() }
 
-  const movieCredits = person.movie_credits?.cast?.slice(0, 20) || []
-  const tvCredits = person.tv_credits?.cast?.slice(0, 12) || []
+  // Cast types here as MovieCredit/TVCredit (TMDb response has these fields)
+  const movieCredits = (person.movie_credits?.cast as unknown as MovieCredit[] | undefined)?.slice(0, 20) || []
+  const tvCredits = (person.tv_credits?.cast as unknown as TVCredit[] | undefined)?.slice(0, 12) || []
+
   const age = person.birthday
     ? Math.floor((Date.now() - new Date(person.birthday).getTime()) / (365.25 * 24 * 3600 * 1000))
     : null
@@ -58,8 +79,6 @@ export default async function PersonPage({ params }: Props) {
                   sizes="280px"
                 />
               </div>
-              {/* Glow effect */}
-              <div className="absolute -inset-4 bg-gradient-to-b from-transparent via-red-950/10 to-transparent rounded-3xl pointer-events-none" />
             </div>
 
             {/* Quick Info */}
@@ -153,7 +172,7 @@ export default async function PersonPage({ params }: Props) {
               <div>
                 <p className="text-xs font-semibold text-white/30 uppercase tracking-wider mb-2">Also Known As</p>
                 <div className="flex flex-wrap gap-2">
-                  {person.also_known_as.slice(0, 6).map((name, i) => (
+                  {person.also_known_as.slice(0, 6).map((name: string, i: number) => (
                     <span key={i} className="px-3 py-1 rounded-full text-xs glass border border-white/8 text-white/50">
                       {name}
                     </span>
@@ -172,8 +191,12 @@ export default async function PersonPage({ params }: Props) {
               <h2 className="section-title">Movie Appearances</h2>
             </div>
             <div className="scroll-container gap-4 pb-4">
-              {movieCredits.map((movie: { id: number; title: string; poster_path: string | null; vote_average: number; release_date: string; character: string }) => (
-                <Link key={`${movie.id}-${movie.character}`} href={`/movie/${movie.id}`} className="scroll-item flex-shrink-0 w-36 group">
+              {movieCredits.map((movie) => (
+                <Link
+                  key={`${movie.id}-${movie.character || 'role'}`}
+                  href={`/movie/${movie.id}`}
+                  className="scroll-item flex-shrink-0 w-36 group"
+                >
                   <div className="aspect-[2/3] rounded-xl overflow-hidden bg-cinema-elevated relative mb-2">
                     <Image
                       src={tmdbImage.poster(movie.poster_path, 'w342')}
@@ -206,8 +229,12 @@ export default async function PersonPage({ params }: Props) {
               <h2 className="section-title">TV Appearances</h2>
             </div>
             <div className="scroll-container gap-4 pb-4">
-              {tvCredits.map((show: { id: number; name: string; poster_path: string | null; vote_average: number; first_air_date: string; character: string }) => (
-                <Link key={`${show.id}-${show.character}`} href={`/tv/${show.id}`} className="scroll-item flex-shrink-0 w-36 group">
+              {tvCredits.map((show) => (
+                <Link
+                  key={`${show.id}-${show.character || 'role'}`}
+                  href={`/tv/${show.id}`}
+                  className="scroll-item flex-shrink-0 w-36 group"
+                >
                   <div className="aspect-[2/3] rounded-xl overflow-hidden bg-cinema-elevated relative mb-2">
                     <Image
                       src={tmdbImage.poster(show.poster_path, 'w342')}
