@@ -1,0 +1,18 @@
+User-agent: *
+Allow: /
+
+# Block admin routes from indexing
+Disallow: /admin/
+Disallow: /api/
+Disallow: /profile/
+Disallow: /watchlist/
+Disallow: /login/
+Disallow: /register/
+
+# Sitemaps
+Sitemap: https://cinescope.vercel.app/sitemap.xml
+Sitemap: https://cinescope.vercel.app/sitemap-movies.xml
+Sitemap: https://cinescope.vercel.app/sitemap-tv.xml
+
+# Crawl delay for bots
+Crawl-delay: 1

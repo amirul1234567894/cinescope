@@ -1,0 +1,62 @@
+{
+  "name": "CineScope — Fetch Trending Movies (Every 6h)",
+  "description": "Auto-fetches trending movies from TMDb and caches them in Supabase",
+  "nodes": [
+    {
+      "parameters": { "rule": { "interval": [{ "field": "hours", "hoursInterval": 6 }] } },
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "position": [240, 300],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "url": "=https://api.themoviedb.org/3/trending/movie/week?api_key={{ $env.TMDB_API_KEY }}&language=en-US",
+        "options": {}
+      },
+      "name": "Fetch Trending Movies",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [460, 300],
+      "typeVersion": 3
+    },
+    {
+      "parameters": {
+        "jsCode": "const movies = $input.first().json.results || [];\nreturn movies.slice(0, 20).map(m => ({\n  tmdb_id: m.id,\n  title: m.title,\n  slug: m.title.toLowerCase().replace(/[^a-z0-9]+/g,'-') + '-' + m.id,\n  poster_path: m.poster_path,\n  backdrop_path: m.backdrop_path,\n  overview: m.overview,\n  release_date: m.release_date,\n  vote_average: m.vote_average,\n  cached_at: new Date().toISOString()\n}));"
+      },
+      "name": "Transform Data",
+      "type": "n8n-nodes-base.code",
+      "position": [680, 300],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "schema": "public",
+        "table": "movie_cache",
+        "columnToMatchOn": "tmdb_id",
+        "dataToSend": "autoMapInputData"
+      },
+      "name": "Upsert to Supabase",
+      "type": "n8n-nodes-base.supabase",
+      "credentials": { "supabaseApi": { "id": "1", "name": "Supabase CineScope" } },
+      "position": [900, 300],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "url": "=https://cinescope.vercel.app/api/revalidate?secret={{ $env.CRON_SECRET }}&tag=trending",
+        "options": {}
+      },
+      "name": "Revalidate Cache",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [1120, 300],
+      "typeVersion": 3
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": { "main": [[{ "node": "Fetch Trending Movies", "type": "main", "index": 0 }]] },
+    "Fetch Trending Movies": { "main": [[{ "node": "Transform Data", "type": "main", "index": 0 }]] },
+    "Transform Data": { "main": [[{ "node": "Upsert to Supabase", "type": "main", "index": 0 }]] },
+    "Upsert to Supabase": { "main": [[{ "node": "Revalidate Cache", "type": "main", "index": 0 }]] }
+  }
+}

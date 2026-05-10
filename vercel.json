@@ -1,0 +1,38 @@
+{
+  "framework": "nextjs",
+  "buildCommand": "npm run build",
+  "outputDirectory": ".next",
+  "installCommand": "npm install",
+  "devCommand": "npm run dev",
+  "regions": ["bom1", "sin1", "iad1"],
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, s-maxage=300, stale-while-revalidate=600" }
+      ]
+    },
+    {
+      "source": "/(.*\\.(?:jpg|jpeg|png|gif|webp|svg|ico|woff|woff2))",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, immutable, max-age=31536000" }
+      ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/sitemap.xml",
+      "destination": "/api/sitemap"
+    }
+  ],
+  "crons": [
+    {
+      "path": "/api/cron/update-trending",
+      "schedule": "0 */6 * * *"
+    },
+    {
+      "path": "/api/cron/update-upcoming",
+      "schedule": "0 0 * * *"
+    }
+  ]
+}

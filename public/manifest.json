@@ -1,0 +1,14 @@
+{
+  "name": "CineScope",
+  "short_name": "CineScope",
+  "description": "Your Premium Movie & Entertainment Universe",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#050507",
+  "theme_color": "#dc2626",
+  "orientation": "portrait-primary",
+  "icons": [
+    { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ],
+  "categories": ["entertainment", "movies", "tv", "media"]
+}
