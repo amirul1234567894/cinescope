@@ -6,7 +6,7 @@ import { Footer } from '@/components/layout/Footer'
 import { Providers } from '@/components/layout/Providers'
 import { VideoBackground } from '@/components/effects/VideoBackground'
 import { AdSenseScript } from '@/components/ads/AdSenseScript'
-import { Analytics } from '@vercel/analytics/react'
+import { Analytics } from '@vercel/analytics/next'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { Toaster } from 'react-hot-toast'
 
